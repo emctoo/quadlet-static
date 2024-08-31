@@ -8,6 +8,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
     steps:
       - uses: actions/checkout@v3
 
@@ -15,10 +18,6 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: "1.23"
-
-      - name: Install just
-        run: |
-          sudo snap install --edge --classic just
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -32,10 +31,29 @@ jobs:
 
       - name: Build
         run: |
-          just build-all
+          cd podman/cmd/quadlet
+          export CGO_ENABLED=0
+          export GOOS=linux
+          export GOARCH=${{ matrix.arch }}
+          go build -a -ldflags '-extldflags "-static"' -o quadlet_${{ matrix.arch }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: quadlet-${{ matrix.arch }}
+          path: podman/cmd/quadlet/quadlet_${{ matrix.arch }}
+
+  create-release:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
 
       - name: Create Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          just release ${GITHUB_REF#refs/tags/}
+          gh release create ${GITHUB_REF#refs/tags/} quadlet-*/quadlet_* --generate-notes
