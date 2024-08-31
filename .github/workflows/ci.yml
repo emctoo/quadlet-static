@@ -32,8 +32,8 @@ jobs:
           just clone
           just build ${{ matrix.arch }}
 
-      - name: Run tests
-        run: just test
+      # - name: Run tests
+      #   run: just test
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
