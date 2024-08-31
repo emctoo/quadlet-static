@@ -22,8 +22,7 @@ build arch="amd64": clone
     export CGO_ENABLED=0
     export GOOS={{default_os}} 
     export GOARCH={{arch}} 
-    go build -a -ldflags '-extldflags "-static"' -o quadlet-{{arch}}
-    cp quadlet-{{arch}} ../../
+    go build -a -ldflags '-extldflags "-static"' -o quadlet_{{arch}}
 
 # compile all
 build-all:
@@ -33,7 +32,7 @@ build-all:
 # cleanup 
 clean:
     rm -rf podman
-    rm -f quadlet-*
+    rm -f quadlet_*
 
 
 # create release
