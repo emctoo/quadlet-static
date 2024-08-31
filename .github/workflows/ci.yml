@@ -1,0 +1,42 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23"
+
+      - name: Install just
+        run: |
+          sudo snap install --edge --classic just
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Build
+        run: |
+          just clone
+          just build ${{ matrix.arch }}
+
+      - name: Run tests
+        run: just test
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: quadlet-${{ matrix.arch }}
+          path: podman/cmd/quadlet/quadlet_${{ matrix.arch }}
