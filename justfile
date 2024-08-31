@@ -23,6 +23,7 @@ build arch="amd64":
     export GOOS={{default_os}} 
     export GOARCH={{arch}} 
     go build -a -ldflags '-extldflags "-static"' -o quadlet_{{arch}}
+    cp quadlet_{{arch}} ../../../../
 
 # compile all
 build-all:
