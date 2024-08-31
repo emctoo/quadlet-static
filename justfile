@@ -16,7 +16,7 @@ clone:
     # cd podman && git submodule update --init
 
 # static compile for different arch
-build arch="amd64": clone
+build arch="amd64":
     #!/usr/bin/env bash
     cd podman/cmd/quadlet
     export CGO_ENABLED=0

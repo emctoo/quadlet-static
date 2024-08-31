@@ -23,9 +23,15 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
+      - name: Clone Podman
+        run: |
+          git clone https://github.com/containers/podman.git
+          cd podman
+          git checkout ${GITHUB_REF#refs/tags/}
+          git submodule update --init
+
       - name: Build
         run: |
-          just clone
           just build-all
 
       - name: Create Release
@@ -33,4 +39,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           just release ${GITHUB_REF#refs/tags/}
-
