@@ -27,7 +27,7 @@ jobs:
         run: |
           git clone https://github.com/containers/podman.git
           cd podman
-          git checkout ${GITHUB_REF#refs/tags/}
+          git checkout v5.2.3
           git submodule update --init
 
       - name: Build
