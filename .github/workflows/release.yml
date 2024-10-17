@@ -2,8 +2,9 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branch: test
+    # tags:
+    # - "v*"
 
 jobs:
   release:
@@ -48,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Download all artifacts
         uses: actions/download-artifact@v3
 
@@ -57,3 +58,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create ${GITHUB_REF#refs/tags/} quadlet-*/quadlet_* --generate-notes
+
