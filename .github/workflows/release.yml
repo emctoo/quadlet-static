@@ -48,6 +48,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.GH_TOKEN }}
           files: |
             podman/cmd/quadlet/quadlet-arm64
             podman/cmd/quadlet/quadlet-amd64
