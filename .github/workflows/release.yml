@@ -37,6 +37,9 @@ jobs:
           export GOOS=linux
           export GOARCH=${{ matrix.arch }}
           go build -a -ldflags '-extldflags "-static"' -o quadlet_${{ matrix.arch }}
+          cp quadlet_${{ matrix.arch }} quadlet
+          ./quadlet --help
+          rm quadlet
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
@@ -58,4 +61,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create ${GITHUB_REF#refs/tags/} quadlet-*/quadlet_* --generate-notes
-
