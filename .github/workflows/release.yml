@@ -40,16 +40,17 @@ jobs:
           ${PWD}/quadlet-${{ matrix.arch }} --help
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: quadlet-${{ matrix.arch }}
+          name: quadlet-${{ matrix.arch }}-v5.2.3 # TODO: Use version
           path: podman/cmd/quadlet/quadlet-${{ matrix.arch }}
+          overwrite: true
 
   create-release:
     needs: release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Download all artifacts
         uses: actions/download-artifact@v3
