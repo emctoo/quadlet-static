@@ -36,16 +36,14 @@ jobs:
           export CGO_ENABLED=0
           export GOOS=linux
           export GOARCH=${{ matrix.arch }}
-          go build -a -ldflags '-extldflags "-static"' -o quadlet_${{ matrix.arch }}
-          cp quadlet_${{ matrix.arch }} quadlet
-          ./quadlet --help
-          rm quadlet
+          go build -a -ldflags '-extldflags "-static"' -o quadlet-${{ matrix.arch }}
+          ${PWD}/quadlet-${{ matrix.arch }} --help
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: quadlet-${{ matrix.arch }}
-          path: podman/cmd/quadlet/quadlet_${{ matrix.arch }}
+          path: podman/cmd/quadlet/quadlet-${{ matrix.arch }}
 
   create-release:
     needs: release
