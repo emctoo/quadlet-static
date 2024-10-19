@@ -13,7 +13,7 @@ jobs:
       matrix:
         arch: [amd64, arm64]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Go
         uses: actions/setup-go@v4
@@ -45,18 +45,9 @@ jobs:
           name: quadlet-${{ matrix.arch }}-v5.2.3 # TODO: Use version
           path: podman/cmd/quadlet/quadlet-${{ matrix.arch }}
           overwrite: true
-
-  create-release:
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3
-
-      - name: Create Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create ${GITHUB_REF#refs/tags/} quadlet-*/quadlet_* --generate-notes
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            podman/cmd/quadlet/quadlet-arm64
+            podman/cmd/quadlet/quadlet-amd64
