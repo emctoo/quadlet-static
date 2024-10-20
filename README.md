@@ -2,6 +2,12 @@
 
 This project provides a way to build static binaries of the `quadlet` tool from the Podman project for both amd64 and arm64 architectures.
 
+You can download pre-built binary and install it by this:
+
+```shell
+curl -fsSL https://raw.githubusercontent.com/emctoo/quadlet-static/refs/heads/main/install.sh | sudo bash
+```
+
 ## Prerequisites
 
 - Go 1.17 or later
