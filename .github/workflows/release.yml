@@ -4,7 +4,7 @@ on:
   push:
     # branches: test
     tags:
-      - "v*"
+      - "v*.*.*"
 
 jobs:
   release:
@@ -27,7 +27,7 @@ jobs:
         run: |
           git clone https://github.com/containers/podman.git
           cd podman
-          git checkout v5.2.3
+          git checkout {{ github.ref_name }}
           git submodule update --init
 
       - name: Build
@@ -42,11 +42,13 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: quadlet-${{ matrix.arch }}-v5.2.3 # TODO: Use version
+          name: quadlet-${{ matrix.arch }}-{{ github.ref_name }}
           path: podman/cmd/quadlet/quadlet-${{ matrix.arch }}
           overwrite: true
+
       - name: Release
         uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           token: ${{ secrets.GH_TOKEN }}
           files: |
