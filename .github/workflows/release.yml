@@ -23,11 +23,17 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
+      - name: Set output
+        id: vars
+        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT # tag
+
       - name: Clone Podman
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
         run: |
           git clone https://github.com/containers/podman.git
           cd podman
-          git checkout {{ github.ref_name }}
+          git checkout $RELEASE_VERSION
           git submodule update --init
 
       - name: Build
