@@ -30,10 +30,6 @@ just build amd64
 just build arm64
 ```
 
-## Installing
-
-Please check the (install.sh)[./install.sh] script.
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
