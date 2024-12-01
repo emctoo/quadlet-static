@@ -32,30 +32,15 @@ just build arm64
 
 ## Installing
 
-After building or downloading the binary:
-
-1. Move the binary to a directory in your PATH:
-
 ```bash
-sudo mv quadlet_amd64 /usr/local/bin/quadlet
-```
+export ARCH="amd64" # or arm64
+curl -L https://github.com/emctoo/quadlet-static/releases/latest/download/quadlet-${ARCH} -o quadlet
+chmod +x quadlet
+sudo mv quadlet /usr/local/bin/quadlet
 
-2. Make it executable:
-
-```bash
-sudo chmod +x /usr/local/bin/quadlet
-```
-
-## Downloading
-
-You can download pre-built binaries from the [Releases](https://github.com/your-username/static-quadlet-builder/releases) page.
-
-## Usage
-
-After installation, you can use `quadlet` like any other command-line tool:
-
-```bash
-quadlet --help
+mkdir -p /etc/systemd/{user,system}-generators/
+ln -sf /usr/local/bin/quadlet /etc/systemd/system-generators/podman-system-generator
+ln -sf /usr/local/bin/quadlet /etc/systemd/user-generators/podman-user-generator
 ```
 
 ## Contributing
